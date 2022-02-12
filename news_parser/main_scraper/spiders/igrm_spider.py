@@ -1,7 +1,6 @@
 import sys
-
-# sys.path.append('/usr/src/utils/news_parser/scrapy_parser/spiders')
-sys.path.append('D:\\game_news_parser\\main_parser\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
 import scrapy
 from main_spider import MainSpider
 

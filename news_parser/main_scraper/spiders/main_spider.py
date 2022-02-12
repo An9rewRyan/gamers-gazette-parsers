@@ -26,7 +26,6 @@ class MainSpider(scrapy.Spider):
         if self.site_base_link not in links[0]:
             for i in range(0, len(links)):
                 links[i]=self.site_base_link+links[i]
-        print(links)
 
         for link in links:
             yield scrapy.Request(url = link, callback = self.scrape)

@@ -1,9 +1,9 @@
 import sys
-
-# sys.path.append('/usr/src/utils/news_parser/scrapy_parser/spiders')
-sys.path.append('D:\\game_news_parser\\main_parser\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
 import scrapy
 from main_spider import MainSpider
+from get_json_from_script_tag import get_info_from_json
 import json
 
 class KnbSpider(MainSpider):
@@ -22,25 +22,19 @@ class KnbSpider(MainSpider):
 
     def parse(self, response):
         landing_data = response.xpath("//script[@id='__NEXT_DATA__']").get()
-        begin_of_json_index = landing_data.find('>')
-        end_of_json_index = landing_data.find('</')
-        landing_data = landing_data[begin_of_json_index+1:end_of_json_index]
-        landing_data_json = json.loads(landing_data)
-        posts_data = landing_data_json["props"]["initialStoreState"]["headingPageStore"]["materials"]["results"]
+        posts_data = get_info_from_json(landing_data, "props","initialStoreState","headingPageStore","materials","results")
         for post in posts_data:
             url = "https://kanobu.ru/news/"+post["slug"]+"-"+str(post["id"])+'/'
             yield scrapy.Request(url = url, callback = self.scrape)
 
     def format_date_time(self, response):
         date_time = super(KnbSpider, self).format_date_time(response)
-        date_time_json = json.loads(date_time)
-        date_time = date_time_json["datePublished"]
+        date_time = json.loads(date_time)["datePublished"]
         return date_time
     
     def format_title(self, response):
         title = super(KnbSpider, self).format_title(response)
-        title = title[0]
-        title_json = json.loads(title)
-        title = title_json["headline"]
+        title = json.loads(title[0])["headline"]
         return title
 
+# to run: scrapy runspider knb_spider.py

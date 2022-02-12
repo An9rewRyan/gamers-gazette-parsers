@@ -1,9 +1,11 @@
 import sys
 # sys.path.append('/usr/src/utils/news_parser/scrapy_parser/spiders')
-sys.path.append('D:\\game_news_parser\\main_parser\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
+
 import scrapy
 from main_spider import MainSpider
-import json
+from get_json_from_script_tag import get_info_from_json
 
 class SgSpider(MainSpider):
 
@@ -29,11 +31,7 @@ class SgSpider(MainSpider):
     #данные берутся из скрытого js файла
     def format_date_time(self, response):
         date_time = super(SgSpider, self).format_date_time(response)
-        begin_of_json_index = date_time.find('>')
-        end_of_json_index = date_time.find('</')
-        date_time = date_time[begin_of_json_index+1:end_of_json_index]
-        date_time_json = json.loads(date_time)
-        date_time = date_time_json["datePublished"]
+        date_time = get_info_from_json(date_time, "datePublished")
         return date_time
 
 # to run: scrapy runspider sg_spider.py
