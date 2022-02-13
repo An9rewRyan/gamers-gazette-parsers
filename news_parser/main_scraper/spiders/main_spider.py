@@ -1,4 +1,10 @@
+import sys
 
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\formatters')
+
+from post_formatter import format_post
 import scrapy
 import time
 import re
@@ -8,6 +14,11 @@ class MainSpider(scrapy.Spider):
     name = "sites"
     start_urls = ['example.com']
     rate = 1
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': '\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\scraped_data\\data.json',
+        'FEED_EXPORT_ENCODING' : 'utf-8'
+    }
 
     def __init__(self, link_path, title_path, text_path, date_time_path, image_path, site_name, site_base_link):
         
@@ -37,7 +48,16 @@ class MainSpider(scrapy.Spider):
         date_time = self.format_date_time(response)
         image = self.format_image(response)
 
-        print(title, text, date_time, image, '\n\n\n\n\n\n\n\n\n')
+        post = {
+            'title': title,
+            'text': text,
+            'date_time': date_time,
+            'image': image
+        }
+
+        post = format_post(post)
+
+        yield {'title':post["title"], 'pub_date':post["date_time"], 'image':post["image"], 'text':post["text"]}
 
     def format_image(self, response):
         image = response.xpath(self.image_path).get(default="https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png")
