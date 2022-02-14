@@ -1,9 +1,10 @@
 import sys
-
-sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
-# sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+# sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
 # sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\formatters')
-
+from scrapy_selenium import SeleniumRequest
 from post_formatter import format_post
 import scrapy
 import time
@@ -14,11 +15,11 @@ class MainSpider(scrapy.Spider):
     name = "sites"
     start_urls = ['example.com']
     rate = 1
-    # custom_settings = {
-    #     'FEED_FORMAT': 'json',
-    #     'FEED_URI': '\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\scraped_data\\data.json',
-    #     'FEED_EXPORT_ENCODING' : 'utf-8'
-    # }
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': '\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\scraped_data\\data.json',
+        'FEED_EXPORT_ENCODING' : 'utf-8'
+    }
 
     def __init__(self, link_path, title_path, text_path, date_time_path, image_path, site_name, site_base_link):
         
@@ -31,14 +32,30 @@ class MainSpider(scrapy.Spider):
         self.site_base_link = site_base_link
 
     def parse(self, response):
+        print(response.request.url)
+        yield SeleniumRequest(url=response.request.url, wait_time=10, wait_until=EC.element_to_be_clickable((By.CLASS_NAME, 'knb-grid-container')), callback=self.parse_links)
+#         links = response.xpath(self.link_path).getall()
+#         print(links)
+#         #проверка, является ли ссылка полной или сокращенной
+#         if self.site_base_link not in links[0]:
+#             for i in range(0, len(links)):
+#                 links[i]=self.site_base_link+links[i]
+# # KnbPageTitle_title__RbUh8
+#         for link in links:
+#             yield SeleniumRequest(url = link, callback = self.scrape)
+    def parse_links(self, response):
 
         links = response.xpath(self.link_path).getall()
+        print('Здесь!')
+        print(links)
         #проверка, является ли ссылка полной или сокращенной
         if self.site_base_link not in links[0]:
             for i in range(0, len(links)):
                 links[i]=self.site_base_link+links[i]
-
+        # KnbPageTitle_title__RbUh8
         for link in links:
+            if 'reviews' in link:
+                continue
             yield scrapy.Request(url = link, callback = self.scrape)
 
     def scrape(self, response):

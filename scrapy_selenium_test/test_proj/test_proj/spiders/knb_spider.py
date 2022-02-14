@@ -1,9 +1,9 @@
 import sys
-sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
-sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
+# sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\spiders')
+# sys.path.append('D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\utils')
 import scrapy
 from main_spider import MainSpider
-from get_json_from_script_tag import get_info_from_json
+# from get_json_from_script_tag import get_info_from_json
 import json
 
 class KnbSpider(MainSpider):
@@ -12,7 +12,7 @@ class KnbSpider(MainSpider):
     start_urls = ['https://kanobu.ru/videogames/']
 
     def __init__(self):
-        self.link_path = "//main/a"
+        self.link_path = "//a[@class='fabric_absolute_body__OxcZb']/@href | //a[@class='style_body__r9G3R']/@href | //a[@class='SmallTextCard_body__f7Khf']/@href"
         self.title_path = "//script[@type='application/ld+json']/text()"
         self.text_path = "//div[starts-with(@class, 'material-content')]/descendant::text()[not(ancestor::ul)]"
         self.date_time_path = "//script[@type='application/ld+json']/text()"
@@ -27,14 +27,18 @@ class KnbSpider(MainSpider):
     #         url = "https://kanobu.ru/news/"+post["slug"]+"-"+str(post["id"])+'/'
     #         yield scrapy.Request(url = url, callback = self.scrape)
 
-    # def format_date_time(self, response):
-    #     date_time = super(KnbSpider, self).format_date_time(response)
-    #     date_time = json.loads(date_time)["datePublished"]
-    #     return date_time
+    def format_date_time(self, response):
+        print("ща наебнется в дате")
+        date_time = super(KnbSpider, self).format_date_time(response)
+        print(date_time)
+        date_time = json.loads(date_time)["datePublished"]
+        return date_time
     
-    # def format_title(self, response):
-    #     title = super(KnbSpider, self).format_title(response)
-    #     title = json.loads(title[0])["headline"]
-    #     return title
+    def format_title(self, response):
+        print("ща наебнется в названии")
+        title = super(KnbSpider, self).format_title(response)
+        print(title)
+        title = json.loads(title[0])["headline"]
+        return title
 
 # to run: scrapy runspider knb_spider.py

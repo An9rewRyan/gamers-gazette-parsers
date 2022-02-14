@@ -24,9 +24,9 @@ DOWNLOADER_MIDDLEWARES = {
 }
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
-# SELENIUM_DRIVER_NAME = 'firefox'
-# SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
-# SELENIUM_DRIVER_ARGUMENTS=['-headless']
+SELENIUM_DRIVER_NAME = 'chrome'
+SELENIUM_DRIVER_EXECUTABLE_PATH = 'D:\\gamers_gazette_parsers\\gamers-gazette-parsers\\scrapy_selenium_test\\test_proj\\chromedriver.exe'
+SELENIUM_DRIVER_ARGUMENTS=['--headless']
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs

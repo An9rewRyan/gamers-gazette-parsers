@@ -16,7 +16,7 @@ class MainSpider(scrapy.Spider):
     rate = 1
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': '\\gamers_gazette_parsers\\gamers-gazette-parsers\\news_parser\\main_scraper\\scraped_data\\data.json',
+        'FEED_URI': '/news_parser/main_scraper/scraped_data/data.json',
         'FEED_EXPORT_ENCODING' : 'utf-8'
     }
 
