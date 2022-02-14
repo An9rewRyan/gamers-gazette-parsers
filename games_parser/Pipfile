@@ -5,13 +5,6 @@ name = "pypi"
 
 [packages]
 scrapy = "*"
-requests = "*"
-bs4 = "*"
-celery = "*"
-psycopg2 = "*"
-redis = "*"
-sqlalchemy = "*"
-scrapy-selenium = "*"
 
 [dev-packages]
 

@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+
+  # web:
+  #   build: ./gamers_gazette
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - ./gamers_gazette/:/usr/src/gamers_gazette/
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
+  #     - redis-server
+      
+  # db:
+  #   image: 'postgres:13.0-alpine'
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: gamers_gazette_db
+  #   ports:
+  #      - "127.0.0.1:5432:5432" 
+  
+  # chrome:
+  #   image: selenium/standalone-chrome:latest
+  #   hostname: chrome
+  #   privileged: true
+  #   shm_size: 2g
+
+  redis-server:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379:6379"
+  
+  celery_beat:
+    build: .
+    command: bash -c "celery -A main beat -l INFO"
+    links:
+      - redis-server
+      # - db
+    depends_on:
+      # - db
+      - redis-server
+  
+  celery_worker:
+    build: .
+    command: bash -c "celery -A main worker -l INFO"
+    volumes:
+      - .:/news_parser/
+    links:
+      - redis-server
+      # - db
+    depends_on:
+      # - db
+      - redis-server
+    
+  # game_links_parser:
+  #   build: ./utils/games_parser/links_parser
+  #   command: python main.py
+  #   links:
+  #     - db
+  #     - chrome
+  #   depends_on:
+  #     - db
+  #     - chrome
+  
+  # game_prices_parser:
+  #   build: ./utils/games_parser/prices_parser/scrapy/game_prices_crawler
+  #   command: python main.py
+  #   links:
+  #     - db
+  #   depends_on:
+  #     - db
+      
+# volumes:
+#   postgres_data:

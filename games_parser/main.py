@@ -14,7 +14,7 @@ from dtf_spider import DtfSpider
 from vg_spider import VgSpider
 from sg_spider import SgSpider
 from pgd_spider import PgdSpider
-from knb_spider import KnbSpider
+from knb_pider import KnbSpider
 from igrm_spider import IgrmSpider
 from celery import Celery
 

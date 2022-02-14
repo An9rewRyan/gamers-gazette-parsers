@@ -1,4 +1,4 @@
-# Scrapy settings for main_parser project
+# Scrapy settings for main_scraper project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -10,23 +10,18 @@
 BOT_NAME = 'main_scraper'
 
 SPIDER_MODULES = ['main_scraper.spiders']
-# NEWSPIDER_MODULE = 'main_scraper.spiders'
+NEWSPIDER_MODULE = 'main_scraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'main_parser (+http://www.yourdomain.com)'
+#USER_AGENT = 'main_scraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-DOWNLOAD_DELAY = 1
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy_selenium.SeleniumMiddleware': 800
-}
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
-# SELENIUM_DRIVER_NAME = 'firefox'
-# SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
-# SELENIUM_DRIVER_ARGUMENTS=['-headless']
+
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
@@ -50,13 +45,13 @@ DOWNLOADER_MIDDLEWARES = {
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'main_parser.middlewares.MainParserSpiderMiddleware': 543,
+#    'main_scraper.middlewares.MainScraperSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'main_parser.middlewares.MainParserDownloaderMiddleware': 543,
+#    'main_scraper.middlewares.MainScraperDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -68,7 +63,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'main_parser.pipelines.MainParserPipeline': 300,
+#    'main_scraper.pipelines.MainScraperPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
